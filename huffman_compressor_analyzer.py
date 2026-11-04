@@ -32,12 +32,14 @@ def construir_arbol(frecuencias):
 
     return heap[0]
 
-def generar_codigos(raiz, codigo_actual="", codigos={}):
+def generar_codigos(raiz, codigo_actual="", codigos=None):
+    if codigos is None:
+        codigos = {}
     if raiz is None:
-        return
+        return codigos
 
     if raiz.char is not None:
-        codigos[raiz.char] = codigo_actual
+        codigos[raiz.char] = codigo_actual or "0"
 
     generar_codigos(raiz.izquierda, codigo_actual + "0", codigos)
     generar_codigos(raiz.derecha, codigo_actual + "1", codigos)
@@ -61,7 +63,7 @@ def huffman_analysis(texto_original):
     comprimido, arbol = comprimir(texto_original)
     print(f"Tamaño comprimido: {len(comprimido)} bits")
     
-    ahorro = 100 * (1 - len(comprimido) / (len(texto_original) * 8))
+    ahorro = 0.0 if not texto_original else 100 * (1 - len(comprimido) / (len(texto_original) * 8))
     print(f"Eficiencia de compresion: {ahorro:.2f}%")
     
     return comprimido
